@@ -16,12 +16,26 @@
 //
 // Execute `rustlings hint box1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 #[derive(PartialEq, Debug)]
 pub enum List {
-    Cons(i32, List),
+    Cons(i32, Box<List>),
     Nil,
+}
+
+impl List {
+    pub fn new() -> List {
+        List::Nil
+    }
+
+    pub fn vec_to_list(vec: Vec<i32>) -> List {
+        let mut list = Self::new();
+
+        for i in (0..vec.len()).rev() {
+            list = List::Cons(vec[i], Box::new(list));
+        }
+
+        list
+    }
 }
 
 fn main() {
@@ -33,11 +47,11 @@ fn main() {
 }
 
 pub fn create_empty_list() -> List {
-    todo!()
+    List::Nil
 }
 
 pub fn create_non_empty_list() -> List {
-    todo!()
+    List::Cons(0, Box::new(List::Nil))
 }
 
 #[cfg(test)]
@@ -53,4 +67,15 @@ mod tests {
     fn test_create_non_empty_list() {
         assert_ne!(create_empty_list(), create_non_empty_list())
     }
+
+    // #[test]
+    // fn test_list_iterator() {
+    //     let int_vec = vec![1, 2];
+    //     let list = List::vec_to_list(int_vec);
+
+    //     let mut iter = list.into_iter();
+    //     assert_eq!(Some(1), iter.next());
+    //     assert_eq!(Some(2), iter.next());
+    //     assert_eq!(None, iter.next());
+    // }
 }
